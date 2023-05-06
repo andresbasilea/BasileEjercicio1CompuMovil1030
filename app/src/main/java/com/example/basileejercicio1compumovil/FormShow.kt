@@ -4,7 +4,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.annotation.SuppressLint
+
+import android.os.Build
 import kotlin.concurrent.thread
 import com.example.basileejercicio1compumovil.databinding.ActivityFormShowBinding
 
@@ -16,8 +17,11 @@ class FormShow : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_form_show)
+//        setContentView(R.layout.activity_form_show)
         supportActionBar?.hide()
+        binding = ActivityFormShowBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
 //        thread {
 //            Thread.sleep(5000)
 //        }
@@ -26,17 +30,27 @@ class FormShow : AppCompatActivity() {
         val bundle = intent.extras
 
         if (bundle != null) {
-            val persona: Person? = bundle.getParcelable("persona")
+            val student: Student? = bundle.getParcelable("student")
 
-            if (persona != null) {
-                binding.tvNombrecompleto2.text = "${persona.nombre} ${persona.apellidos}"
-                binding.tvEdad2.text = resources.getQuantityString(R.string.edadR, persona.edad, persona.edad) --revosar
-                binding.tvSignozodiacal2.text = "${persona.signo}"
-                binding.tvSignozodiacalchino2.text = "${persona.signoChino}"
-                binding.tvCorreo2.text = "${persona.correo}"
-                binding.tvNumCuenta2.text = "${persona.numCuenta}"
 
-                val carreraImageResId = when (persona.carrera) {
+//            var student: Student? = null
+//
+//            student = if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.TIRAMISU){
+//                bundle.getParcelable<Student>("student", student::class.java)
+//            }else{
+//                bundle.getParcelable<Student>("student")
+//            }
+
+            if (student != null) {
+                binding.tvNombrecompleto2.text = "${student.nombre} ${student.apellidos}"
+                binding.tvNumCuenta2.text = "${student.numCuenta}"
+                binding.tvEdad2.text = resources.getQuantityString(R.plurals.edadR,student.edad,student.edad)
+                binding.tvSignozodiacal2.text = "${student.signo}"
+                binding.tvSignozodiacalchino2.text = "${student.signoChino}"
+                binding.tvCorreo2.text = "${student.correo}"
+
+
+                val carreraImageResId = when (student.carrera) {
                     1 -> R.drawable.ingenieria_aeroespacial
                     2 -> R.drawable.ingenieria_ambiental
                     3 -> R.drawable.ingenieria_civil

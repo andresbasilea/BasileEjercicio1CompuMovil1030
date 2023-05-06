@@ -1,5 +1,6 @@
 package com.example.basileejercicio1compumovil
 
+import android.app.DatePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -58,7 +59,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    // con algo de ayuda de gpt
+    // con algo de ayuda de chat gpt
     private fun validate(): Boolean {
         return when {
             binding.etNombre.text.isEmpty() -> {
@@ -97,113 +98,120 @@ class MainActivity : AppCompatActivity() {
 
 
 
+
+    // Chat GPT
+    fun calcularSignoZodiacal(fecha: String): String? {
+        val formatoFecha = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val fechaNacimiento = formatoFecha.parse(fecha)
+        val calendar = Calendar.getInstance().apply {
+            time = fechaNacimiento!!
+        }
+        val dia = calendar.get(Calendar.DAY_OF_MONTH)
+        val mes = calendar.get(Calendar.MONTH)
+        val signos = resources.getStringArray(R.array.SignoZodiacal)
+        val diasInicioSigno = intArrayOf(20, 19, 21, 20, 21, 21, 22, 23, 23, 23, 22, 22)
+        var indiceSigno = mes
+        if (dia < diasInicioSigno[mes]) {
+            indiceSigno--
+            if (indiceSigno < 0) {
+                indiceSigno = 11
+            }
+        }
+        return signos[indiceSigno]
+    }
 //
-//    //Chat GPT
-//    fun calcularSignoZodiacal(fecha: String): String? {
-//        val formatoFecha = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-//        val fechaNacimiento = formatoFecha.parse(fecha)
-//        val calendar = Calendar.getInstance().apply {
-//            time = fechaNacimiento!!
-//        }
-//        val dia = calendar.get(Calendar.DAY_OF_MONTH)
-//        val mes = calendar.get(Calendar.MONTH)
-//        val signos = resources.getStringArray(R.array.SignoZodiacal)
-//        val diasInicioSigno = intArrayOf(20, 19, 21, 20, 21, 21, 22, 23, 23, 23, 22, 22)
-//        var indiceSigno = mes
-//        if (dia < diasInicioSigno[mes]) {
-//            indiceSigno--
-//            if (indiceSigno < 0) {
-//                indiceSigno = 11
-//            }
-//        }
-//        return signos[indiceSigno]
-//    }
-//
-//    //chat GPT
-//    fun calcularSignoZodiacoChino(fecha: String): String? {
-//        val formatoFecha = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-//        val fechaNacimiento = formatoFecha.parse(fecha)
-//        val calendar = Calendar.getInstance().apply {
-//            time = fechaNacimiento!!
-//        }
-//        val year = calendar.get(Calendar.YEAR)
-//        val signos = resources.getStringArray(R.array.SignoChino)
-//        val cicloZodiacoChino = (year - 1900) % 12
-//        return signos[cicloZodiacoChino]
-//    }
-//
-//
-//    fun Calendario_click(view: View) {
-//        val Dialogfecha = DatePickerFragment{year, month, day -> printDate(year, month, day)}
-//
-//        Dialogfecha.show(supportFragmentManager, "DatePicker")
-//    }
-//
-//    private fun printDate(year: Int, month: Int, day: Int){
-//        binding.etDate.setText("$day/$month/$year")
-//    }
+    //chat GPT
+    fun calcularSignoZodiacalChino(fecha: String): String? {
+        val formatoFecha = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val fechaNacimiento = formatoFecha.parse(fecha)
+        val calendar = Calendar.getInstance()
+        calendar.time = fechaNacimiento!!
+        val year = calendar.get(Calendar.YEAR)
+        val signos = resources.getStringArray(R.array.SignoChino)
+        val cicloZodiacoChino = (year - 1900) % 12
+        return signos[cicloZodiacoChino]
+    }
+
+    fun Calendario_click(view: View) {
+        val Dialogfecha = DateSelect{year, month, day -> printDate(year, month, day)}
+
+        Dialogfecha.show(supportFragmentManager, "DatePicker")
+    }
+
+    private fun printDate(year: Int, month: Int, day: Int){
+        binding.etDate.setText("$day/$month/$year")
+    }
+
+
+    class DateSelect(val listener:(year:Int, month:Int, day:Int) -> Unit): DialogFragment(), DatePickerDialog.OnDateSetListener{
+
+        override fun onCreateDialog(savedInstanceState: Bundle?): Dialog{
+            val c = Calendar.getInstance()
+            var year = c.get(Calendar.YEAR)
+            var month = c.get(Calendar.MONTH)
+            var day = c.get(Calendar.DAY_OF_MONTH)
+            //var dayOfYear = c.get(Calendar.DAY_OF_YEAR)
+
+            //val datePickerDialog = DatePickerDialog(requireActivity(),R.style.datePickerTheme,this, year, month, day)
+            val datePickerDialog = DatePickerDialog(requireActivity(),this, year, month, day)
+            val calendarMaxDate = Calendar.getInstance().apply {
+                set(2010, 0, 1)}
+            val maxDate = calendarMaxDate.timeInMillis
+            //datePickerDialog.datePicker.maxDate = System.currentTimeMillis()
+            datePickerDialog.datePicker.maxDate = maxDate
+            val calendarMinDate = Calendar.getInstance().apply {
+                set(1900, 0, 1)}
+            val minDate = calendarMinDate.timeInMillis
+            datePickerDialog.datePicker.minDate = minDate
+
+            return datePickerDialog
+
+        }
+
+        override fun onDateSet(p0: DatePicker?, year: Int, month: Int, day: Int) {
+            listener(year,month+1,day)
+        }
+    }
+
+
+
 
 //    //ChatGPT
-//    private fun calculaEdad(FechaNacimiento: String): Int{
-//        val fechaNac: Date = SimpleDateFormat("dd/MM/yyyy").parse(FechaNacimiento)
-//        val calendarFechaNac = Calendar.getInstance()
-//        calendarFechaNac.time = fechaNac
-//        val calendarHoy = Calendar.getInstance()
-//        var edad = calendarHoy.get(Calendar.YEAR) - calendarFechaNac.get(Calendar.YEAR)
-//        if (calendarHoy.get(Calendar.DAY_OF_YEAR) < calendarFechaNac.get(Calendar.DAY_OF_YEAR)) {
-//            edad--
-//        }
-//        return edad
-//    }
+    private fun obtenerEdad(FechaNacimiento: String): Int {
+        val formatoFecha = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val fechaNac: Date = formatoFecha.parse(FechaNacimiento)
+        val calendarFechaNac = Calendar.getInstance().apply {
+            time = fechaNac
+        }
+        val calendarHoy = Calendar.getInstance()
+        var edad = calendarHoy.get(Calendar.YEAR) - calendarFechaNac.get(Calendar.YEAR)
+        if (calendarHoy.get(Calendar.DAY_OF_YEAR) < calendarFechaNac.get(Calendar.DAY_OF_YEAR)) {
+            edad--
+        }
+        return edad
+    }
 
-//    fun clickContinuar(view: View) {
-//
-//        if (validarDatos()) {
-//            Toast.makeText(this, resources.getString(R.string.DatosCorrectos), Toast.LENGTH_LONG)
-//                .show()
-//            val intent = Intent(this, MuestraFormulario::class.java)
-//
-//            val bundle = Bundle()
-//            val persona = Persona(binding.etNombre.text.toString(),binding.etApellidos.text.toString(),calculaEdad(binding.etDate.text.toString()),calcularSignoZodiacal(binding.etDate.text.toString()),calcularSignoZodiacoChino(binding.etDate.text.toString()),binding.etCorreo.text.toString(),binding.etNumCuenta.text.toString().toInt(),binding.spinner.selectedItemPosition.toString().toInt())
-//
-//            bundle.putParcelable("persona", persona)
-//            intent.putExtras(bundle)
-//            startActivity(intent)
-//
-//        } else {
-//            Toast.makeText(this, resources.getString(R.string.DatosIncorrectos), Toast.LENGTH_LONG)
-//                .show()
-//        }
-//    }
+    fun Continuar_click(view: View) {
 
-//    class DatePickerFragment(val listener:(year:Int, month:Int, day:Int) -> Unit): DialogFragment(), DatePickerDialog.OnDateSetListener{
-//
-//        override fun onCreateDialog(savedInstanceState: Bundle?): Dialog{
-//            val c = Calendar.getInstance()
-//            var year = c.get(Calendar.YEAR)
-//            var month = c.get(Calendar.MONTH)
-//            var day = c.get(Calendar.DAY_OF_MONTH)
-//            //var dayOfYear = c.get(Calendar.DAY_OF_YEAR)
-//
-//            //val datePickerDialog = DatePickerDialog(requireActivity(),R.style.datePickerTheme,this, year, month, day)
-//            val datePickerDialog = DatePickerDialog(requireActivity(),this, year, month, day)
-//            val calendarMaxDate = Calendar.getInstance().apply {
-//                set(2010, 0, 1)}
-//            val maxDate = calendarMaxDate.timeInMillis
-//            //datePickerDialog.datePicker.maxDate = System.currentTimeMillis()
-//            datePickerDialog.datePicker.maxDate = maxDate
-//            val calendarMinDate = Calendar.getInstance().apply {
-//                set(1900, 0, 1)}
-//            val minDate = calendarMinDate.timeInMillis
-//            datePickerDialog.datePicker.minDate = minDate
-//
-//            return datePickerDialog
-//
-//        }
-//
-//        override fun onDateSet(p0: DatePicker?, year: Int, month: Int, day: Int) {
-//            listener(year,month+1,day)
-//        }
-//    }
+        if (validate()) {
+            Toast.makeText(this, resources.getString(R.string.IngresoCorrecto), Toast.LENGTH_LONG)
+                .show()
+            val intent = Intent(this, FormShow::class.java)
+
+            val bundle = Bundle()
+            val student = Student(binding.etNombre.text.toString(),binding.etApellidos.text.toString(),binding.etNumCuenta.text.toString().toInt(),obtenerEdad(binding.etDate.text.toString()),calcularSignoZodiacal(binding.etDate.text.toString()),calcularSignoZodiacalChino(binding.etDate.text.toString()),binding.etCorreo.text.toString(),binding.spinner.selectedItemPosition.toString().toInt())
+
+            bundle.putParcelable("student", student)
+            intent.putExtras(bundle)
+            startActivity(intent)
+
+        } else {
+            Toast.makeText(this, resources.getString(R.string.IngresoIncorrecto), Toast.LENGTH_LONG)
+                .show()
+        }
+    }
+
+
+
 
 }
