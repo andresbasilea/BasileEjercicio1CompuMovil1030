@@ -17,7 +17,10 @@
     <string name="Correo">Correo Electrónico</string>
     <string name="NumCuenta">Número de Cuenta</string>
     <string name="Carrera">Carrera</string>
-
+    <string name="first_fragment_label">ffl</string>
+    <string name="second_fragment_label">ffl</string>
+    <string name="lorem_ipsum">lorem ipsum</string>
+    <string name="previous">previous</string>
 
     <string name="NombreValidar">"Ingrese un nombre válido"</string>
     <string name="ApellidosValidar">"Ingrese apellidos válidos"</string>
@@ -31,10 +34,15 @@
 
     <string name="Continuar">Continuar</string>
     <string name="ValorR">Valor Requerido</string>
-    <string name="lorem_ipsum">lorem ipsum</string>
-    <string name="previous">previous</string>
-    <string name="first_fragment_label">ffl</string>
-    <string name="second_fragment_label">sfl</string>
+
+
+    <string name="Regresar">Regresar</string>
+    <string name="NombreCompleto">Nombre Completo</string>
+    <string name="Edad">Edad</string>
+    <string name="SignoZodiacal2">Signo Zodiacal</string>
+    <string name="SignoChino2">Signo Horóscopo Chino</string>
+
+    <string name="edadR"> %d años cumplidos</string>
 
     <string-array name="SignoZodiacal">
         <item>Acuario</item>
@@ -84,5 +92,6 @@
         <item>Perro</item>
         <item>Cerdo</item>
     </string-array>
+
 
 </resources>

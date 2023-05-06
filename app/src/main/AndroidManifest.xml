@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BasileEjercicio1CompuMovil">
         <activity
+            android:name=".Person"
+            android:exported="false" />
+        <activity
             android:name=".FormShow"
             android:exported="false" />
         <activity
@@ -23,7 +26,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
     </application>
 
 </manifest>
