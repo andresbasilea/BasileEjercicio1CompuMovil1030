@@ -44,7 +44,7 @@
         android:fontFamily="@font/firasansbold"
         android:text="@string/Version"
         android:textColor="#BAB9B9"
-        android:textSize="@dimen/textViewSize"
+        android:textSize="@dimen/textViewSizeSmall"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.958"
