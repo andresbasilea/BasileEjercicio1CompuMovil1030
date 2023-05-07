@@ -29,9 +29,9 @@
     <string name="first_fragment_label">ffl</string>
     <string name="second_fragment_label">sfl</string>
 
-    <plurals name="edadR">
-        <item quantity="one"> % year old</item>
-        <item quantity="other"> % years old</item>
+    <plurals name="edadPlural">
+        <item quantity="one">% year old</item>
+        <item quantity="other">% years old</item>
     </plurals>
 
     <string name="Regresar">Back</string>

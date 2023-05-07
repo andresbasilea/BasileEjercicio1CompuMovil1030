@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BasileEjercicio1CompuMovil">
         <activity
-            android:name=".Person"
+            android:name=".Student"
             android:exported="false" />
         <activity
             android:name=".FormShow"

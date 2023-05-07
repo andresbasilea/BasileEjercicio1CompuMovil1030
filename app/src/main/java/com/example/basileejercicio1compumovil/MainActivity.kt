@@ -23,10 +23,12 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    var accNumber = 0
-    var day = 0
-    var month = 0
+
     var year = 0
+    var month = 0
+    var day = 0
+    var numCuenta = 0
+
 
     private fun checkMail(mail: CharSequence) = (!TextUtils.isEmpty(mail) && Patterns.EMAIL_ADDRESS.matcher(mail).matches())
 
@@ -48,7 +50,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.spinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                Log.d("LOGTAG", "El item seleccionado tiene la posición $position")
+                Log.d("LOGTAG", "################## El item seleccionado tiene la posición $position")
             }
             override fun onNothingSelected(parent: AdapterView<*>){
 
@@ -72,6 +74,13 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, resources.getString(R.string.ApellidosValidar), Toast.LENGTH_LONG).show()
                 false
             }
+
+            binding.etNumCuenta.text.isEmpty() || binding.etNumCuenta.text.length != 9 -> {
+                binding.etNumCuenta.error = resources.getString(R.string.ValorR)
+                Toast.makeText(this, resources.getString(R.string.NumCuentaValidar), Toast.LENGTH_LONG).show()
+                false
+            }
+
             binding.etDate.text.isEmpty() -> {
                 binding.etDate.error = resources.getString(R.string.ValorR)
                 Toast.makeText(this, resources.getString(R.string.FechaNacimientoValidar), Toast.LENGTH_LONG).show()
@@ -83,11 +92,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, resources.getString(R.string.CorreoValidar), Toast.LENGTH_LONG).show()
                 false
             }
-            binding.etNumCuenta.text.isEmpty() || binding.etNumCuenta.text.length != 9 -> {
-                binding.etNumCuenta.error = resources.getString(R.string.ValorR)
-                Toast.makeText(this, resources.getString(R.string.NumCuentaValidar), Toast.LENGTH_LONG).show()
-                false
-            }
+
             binding.spinner.selectedItemPosition == 0 -> {
                 Toast.makeText(this, resources.getString(R.string.CarreraValidar), Toast.LENGTH_LONG).show()
                 false
@@ -199,9 +204,9 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, FormShow::class.java)
 
             val bundle = Bundle()
-            val student = Student(binding.etNombre.text.toString(),binding.etApellidos.text.toString(),binding.etNumCuenta.text.toString().toInt(),obtenerEdad(binding.etDate.text.toString()),calcularSignoZodiacal(binding.etDate.text.toString()),calcularSignoZodiacalChino(binding.etDate.text.toString()),binding.etCorreo.text.toString(),binding.spinner.selectedItemPosition.toString().toInt())
+            val student1 = Student(binding.etNombre.text.toString(),binding.etApellidos.text.toString(),binding.etNumCuenta.text.toString().toInt(),obtenerEdad(binding.etDate.text.toString()),calcularSignoZodiacal(binding.etDate.text.toString()),calcularSignoZodiacalChino(binding.etDate.text.toString()),binding.etCorreo.text.toString(),binding.spinner.selectedItemPosition.toString().toInt())
 
-            bundle.putParcelable("student", student)
+            bundle.putParcelable("student1", student1)
             intent.putExtras(bundle)
             startActivity(intent)
 

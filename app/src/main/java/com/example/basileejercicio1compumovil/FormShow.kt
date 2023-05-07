@@ -1,5 +1,6 @@
 package com.example.basileejercicio1compumovil
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -15,6 +16,7 @@ class FormShow : AppCompatActivity() {
 
     private lateinit var binding: ActivityFormShowBinding
 
+    @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        setContentView(R.layout.activity_form_show)
@@ -30,27 +32,27 @@ class FormShow : AppCompatActivity() {
         val bundle = intent.extras
 
         if (bundle != null) {
-            val student: Student? = bundle.getParcelable("student")
+//            val student: Student? = bundle.getParcelable("student")
+
+            var student1: Student?
+
+            student1 = if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.TIRAMISU){
+                bundle.getParcelable<Student>("student1", Student::class.java)
+            }else{
+                bundle.getParcelable<Student>("student1")
+            }
+
+            if (student1 != null) {
+                binding.tvNombrecompleto2.text = "${student1.nombre} ${student1.apellidos}"
+                binding.tvNumCuenta2.text = "${student1.numCuenta}"
+                //binding.tvEdad2.text = resources.getQuantityString(R.plurals.edadPlural,student1.edad,student1.edad)
+                binding.tvEdad2.text = "${student1.edad}"
+                binding.tvSignozodiacal2.text = "${student1.signo}"
+                binding.tvSignozodiacalchino2.text = "${student1.signoChino}"
+                binding.tvCorreo2.text = "${student1.correo}"
 
 
-//            var student: Student? = null
-//
-//            student = if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.TIRAMISU){
-//                bundle.getParcelable<Student>("student", student::class.java)
-//            }else{
-//                bundle.getParcelable<Student>("student")
-//            }
-
-            if (student != null) {
-                binding.tvNombrecompleto2.text = "${student.nombre} ${student.apellidos}"
-                binding.tvNumCuenta2.text = "${student.numCuenta}"
-                binding.tvEdad2.text = resources.getQuantityString(R.plurals.edadR,student.edad,student.edad)
-                binding.tvSignozodiacal2.text = "${student.signo}"
-                binding.tvSignozodiacalchino2.text = "${student.signoChino}"
-                binding.tvCorreo2.text = "${student.correo}"
-
-
-                val carreraImageResId = when (student.carrera) {
+                val carreraImageResId = when (student1.carrera) {
                     1 -> R.drawable.ingenieria_aeroespacial
                     2 -> R.drawable.ingenieria_ambiental
                     3 -> R.drawable.ingenieria_civil

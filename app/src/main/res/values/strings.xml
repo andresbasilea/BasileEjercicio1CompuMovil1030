@@ -42,9 +42,9 @@
     <string name="SignoZodiacal2">Signo Zodiacal</string>
     <string name="SignoChino2">Signo Horóscopo Chino</string>
 
-    <plurals name="edadR">
-        <item quantity="one"> % año</item>
-        <item quantity="other"> % años</item>
+    <plurals name="edadPlural">
+        <item quantity="one">% año</item>
+        <item quantity="other">% años</item>
     </plurals>
 
     <string-array name="SignoZodiacal">
